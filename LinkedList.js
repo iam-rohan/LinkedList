@@ -39,6 +39,22 @@ class LinkedList {
     return this.head;
   }
 
+  pop() {
+    if (this.head == null) {
+      console.log("No item to pop");
+      return null;
+    } else if (this.head.nextNode == null) {
+      this.head = null;
+    } else {
+      let tmp = this.head;
+      while (tmp.nextNode != null) {
+        var prev = tmp;
+        tmp = tmp.nextNode;
+      }
+      prev.nextNode = null;
+    }
+  }
+
   tail() {
     let tmp = this.head;
     if (!tmp) return null;
@@ -92,6 +108,36 @@ class LinkedList {
     string += "null";
     return string;
   }
+
+  insertAt(value, index) {
+    let tmp = this.head;
+    let count = 0;
+    while (tmp != null && count < index - 1) {
+      tmp = tmp.nextNode;
+      count++;
+    }
+
+    const newNode = new Node(value, tmp.nextNode);
+    tmp.nextNode = newNode;
+  }
+
+  removeAt(index) {
+    if (this.head === null) {
+      console.log("List is empty");
+      return null;
+    }
+    if (index == 0) {
+      this.head = this.head.nextNode;
+      return;
+    }
+    let tmp = this.head;
+    let count = 0;
+    while (tmp.nextNode != null && count < index - 1) {
+      tmp = tmp.nextNode;
+      count++;
+    }
+    tmp.nextNode = tmp.nextNode.nextNode;
+  }
 }
 
 const list = new LinkedList();
@@ -102,9 +148,12 @@ list.append("parrot");
 list.append("hamster");
 list.append("snake");
 list.append("turtle");
+list.insertAt("mongoose", 3);
 
 console.log(list.toString());
 console.log(list.at(5));
 console.log(list.contains("snake"));
 console.log(list.contains("ant"));
-console.log(list.find("dog"));
+console.log(list.find("mongoose"));
+list.removeAt(2);
+console.log(list.find("mongoose"));
